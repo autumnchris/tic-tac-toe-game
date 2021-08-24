@@ -30,6 +30,10 @@ module.exports = {
           'css-loader',
           'sass-loader'
         ]
+      },
+      {
+        test: /\.(jpg|png|svg)$/,
+        type: 'asset'
       }
     ]
   },
