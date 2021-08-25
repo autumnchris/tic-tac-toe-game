@@ -1,0 +1,102 @@
+@import "variables";
+
+// BASE PAGE STYLES
+
+html {
+  background: transparent;
+  box-sizing: border-box;
+  color: $star-wars-yellow;
+  height: 100%;
+  letter-spacing: 1px;
+  text-align: center;
+  body {
+    background: $black;
+    min-height: 100%;
+    overscroll-behavior: none;
+    padding: 0 20px;
+    position: relative;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      box-sizing: border-box;
+      margin-top: 0;
+    }
+  }
+}
+
+// BASE ELEMENT STYLES
+
+div,
+header,
+main,
+footer,
+form,
+label,
+input,
+select,
+button,
+button:hover,
+button:active,
+button:focus {
+  box-sizing: border-box;
+}
+
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
+}
+
+a,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+  color: change-color($black, $lightness: 100%);
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+a:focus,
+button:focus,
+details:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus {
+  box-shadow: 0 0 3px 3px hsla(203, 95%, 62%, 0.8);
+  outline: none;
+}
+
+.message {
+  border-radius: 5px;
+  line-height: 1.55;
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 15px 10px;
+}
+
+// SPECIFIC ELEMENT STYLES
+
+.info-message {
+  background: change-color($info-blue, $lightness: 95%);
+  border: 1px solid change-color($info-blue, $lightness: 90%);
+  color: $info-blue;
+}
+
+noscript .info-message {
+  left: 50%;
+  margin: 0 auto;
+  min-width: 280px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
