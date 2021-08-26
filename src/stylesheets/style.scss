@@ -15,6 +15,16 @@ html {
     overscroll-behavior: none;
     padding: 0 20px;
     position: relative;
+    footer {
+      bottom: 0;
+      font-size: 0.8rem;
+      left: 0;
+      letter-spacing: 2px;
+      padding: 14px 0;
+      position: absolute;
+      right: 0;
+      width: 100%;
+    }
     h1,
     h2,
     h3,
