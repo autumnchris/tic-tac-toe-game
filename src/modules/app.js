@@ -1,4 +1,5 @@
 import starWarsLogo from '../images/star-wars-logo.png';
+import { Game } from './game';
 
 const App = (() => {
 
@@ -14,6 +15,14 @@ const App = (() => {
       <div class="game-container"></div>
     </main>
     <footer>Created by <a href="https://autumnbullard-portfolio.herokuapp.com" target="_blank">Autumn Bullard</a> &copy; ${new Date().getFullYear()}</footer>`;
+
+    Game.startNewGame('2-player');
+
+    document.addEventListener('click', event => {
+      const element = event.target;
+      element.matches('.square') ? Game.playTurn(event) : null;
+      element.matches('.restart-button') ? Game.startNewGame('2-player') : null;
+    });
   }
 
   return {
