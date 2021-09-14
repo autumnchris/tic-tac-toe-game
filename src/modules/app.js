@@ -10,6 +10,9 @@ const App = (() => {
       </h1>
       <h2>Tic-Tac-Toe</h2>
     </header>
+    <main>
+      <div class="game-container"></div>
+    </main>
     <footer>Created by <a href="https://autumnbullard-portfolio.herokuapp.com" target="_blank">Autumn Bullard</a> &copy; ${new Date().getFullYear()}</footer>`;
   }
 
