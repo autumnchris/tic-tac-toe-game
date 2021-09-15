@@ -11,7 +11,10 @@ const Game = (() => {
     [ 0, 4, 8 ],
     [ 2, 4, 6 ]
   ];
+  let gameFormData;
   let board;
+  let playerOne;
+  let playerTwo;
   let currentPlayer;
 
   const Player = (playerType, playAs) => {
@@ -23,53 +26,53 @@ const Game = (() => {
 
   function renderGameBoard(firstPlayer) {
     document.querySelector('.game-container').innerHTML = `<div class="board-container">
-      <div class="button-group">
-        <button type="button" class="button restart-button">Restart</button>
-        <button type="button" class="button settings-button">Settings</button>
-      </div>
-      <p class="current-turn-message">The ${firstPlayer} goes first!</p>
+      <p class="current-turn-message">The ${firstPlayer.playAs} goes first!</p>
       <div class="game-board">
         ${board.map((square, index) => {
           return `<div class="square fab" id="${index}"></div>`;
         }).join('')}
       </div>
+      <button type="button" class="button restart-button">Restart</button>
     </div>`;
   }
 
-  function startNewGame(players, difficulty = null, playAs = null) {
-    let playerOne;
-    let playerTwo;
+  function setGameFormData(newGameFormData) {
+    if (newGameFormData) gameFormData = newGameFormData;
+    return gameFormData;
+  }
+
+  function startNewGame(gameData) {
     board = new Array(9).fill('');
 
-    if (players === '1-player') {
-      console.log('One player game...');
+    if (gameData.players === '1-player') {
+      playerOne = Player('human', gameData.playAs);
+      playerTwo = Player('ai', gameData.playAs === 'Rebellion' ? 'Empire' : 'Rebellion');
     }
     else {
       playerOne = Player('human', 'Rebellion');
       playerTwo = Player('human', 'Empire');
     }
-    currentPlayer = playerOne.playAs;
-    renderGameBoard(playerOne.playAs);
-    console.log(playerOne);
-    console.log(playerTwo);
+
+    currentPlayer = playerOne;
+    renderGameBoard(currentPlayer);
     NewGameModal.closeNewGameModal();
   }
 
   function playTurn(event) {
 
     if (!board[event.target.id]) {
-      board[event.target.id] = currentPlayer.toLowerCase();
-      document.getElementById(event.target.id).classList.add(`fa-${currentPlayer === 'Rebellion' ? 'rebel' : 'empire'}`, currentPlayer.toLowerCase(), 'selected');
+      board[event.target.id] = currentPlayer.playAs.toLowerCase();
+      document.getElementById(event.target.id).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, currentPlayer.playAs.toLowerCase(), 'selected');
 
-      if (checkForWinner(currentPlayer)) {
-        endGame(currentPlayer);
+      if (checkForWinner(currentPlayer.playAs)) {
+        endGame(currentPlayer.playAs);
       }
       else if (checkForDraw()) {
         endGame('draw');
       }
       else {
-        currentPlayer === 'Rebellion' ? currentPlayer = 'Empire' : currentPlayer = 'Rebellion';
-        document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer}'s turn.`;
+        currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
+        document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer.playAs}'s turn.`;
       }
     }
   }
@@ -95,6 +98,7 @@ const Game = (() => {
   }
 
   return {
+    setGameFormData,
     startNewGame,
     playTurn
   };

@@ -10,7 +10,7 @@ const NewGameModal = (() => {
         <p>${endGameMessage}</p>
         <div class="button-group">
           <button type="button" class="button restart-button">Play Again</button>
-          <button type="button" class="button">Settings</button>
+          <button type="button" class="button game-settings-button">Settings</button>
         </div>
       </div>
     </div>`;
