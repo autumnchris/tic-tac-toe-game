@@ -28,11 +28,11 @@ const NewGameModal = (() => {
 
     if (winner === 'draw') {
       winningPlayerIcon = `
-      <span class="fab fa-rebel fa-3x rebellion"></span>
-      <span class="fab fa-empire fa-3x empire"></span>`;
+      <span class="fab fa-rebel rebellion-icon"></span>
+      <span class="fab fa-empire empire-icon"></span>`;
     }
     else {
-      winningPlayerIcon = `<span class="fab fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} fa-3x ${winner.toLowerCase()}"></span>`;
+      winningPlayerIcon = `<span class="fab fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} ${winner.toLowerCase()}-icon"></span>`;
     }
     document.querySelector('.winning-player-icon').innerHTML = winningPlayerIcon;
   }
