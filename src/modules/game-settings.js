@@ -2,7 +2,18 @@ import { Game } from "./game";
 import { NewGameModal } from "./new-game-modal";
 
 const GameSettings = (() => {
+  let gameSettingsData;
 
+  // Factory function to create data for a new settings form submission
+  const SettingsFormData = (players, difficulty, playAs) => {
+    return {
+      players,
+      difficulty,
+      playAs
+    };
+  };
+
+  // Creates the DOM elements for the game settings form
   function renderGameSettings() {
     document.querySelector('.game-container').innerHTML = `<div class="game-settings-container">
       <h3>Start a New Game</h3>
@@ -26,6 +37,7 @@ const GameSettings = (() => {
     NewGameModal.closeNewGameModal();
   }
 
+  // Shows/Hides the settings options that applies to a 1-player game only
   function toggleOnePlayerSettings(players) {
     let onePlayerSettings;
 
@@ -60,20 +72,23 @@ const GameSettings = (() => {
     }
   }
 
+  // Submit handler for the game settings form
   function handleSubmit(event, players, difficulty = null, playAs = null) {
     event.preventDefault();
-    const newGameFormData = Game.setGameFormData({
-      players,
-      difficulty,
-      playAs
-    });
-    Game.startNewGame(newGameFormData);
+    gameSettingsData = SettingsFormData(players, difficulty, playAs);
+    Game.startNewGame(gameSettingsData);
+  }
+
+  // Returns the values of the current game settings
+  function returnGameSettingsData() {
+    return gameSettingsData;
   }
 
   return {
     renderGameSettings,
     toggleOnePlayerSettings,
-    handleSubmit
+    handleSubmit,
+    returnGameSettingsData
   };
 })();
 
