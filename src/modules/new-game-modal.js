@@ -1,5 +1,6 @@
 const NewGameModal = (() => {
 
+  // Creates the DOM elements for a modal that tells the user who won and to allow them to start a new game
   function openNewGameModal(endGameMessage, winner) {
     const newGameModal = document.createElement('div');
     newGameModal.classList.add('modal');
@@ -18,11 +19,13 @@ const NewGameModal = (() => {
     renderWinningPlayerIcon(winner);
   }
 
+  // Removes the DOM elements for the modal while it's currently displayed
   function closeNewGameModal() {
     const newGameModal = document.getElementById('modal');
     newGameModal ? document.querySelector('main').removeChild(newGameModal) : null;
   }
 
+  // Creates the DOM elements for the icon of the winning player to be displayed within the modal
   function renderWinningPlayerIcon(winner) {
     let winningPlayerIcon;
 

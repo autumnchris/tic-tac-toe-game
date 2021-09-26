@@ -4,6 +4,7 @@ import { Game } from './game';
 
 const App = (() => {
 
+  // Creates the DOM elements for the webpage content
   function renderApp() {
     document.getElementById('app').innerHTML = `
     <header>
@@ -19,18 +20,21 @@ const App = (() => {
 
     GameSettings.renderGameSettings();
 
+    // Click Event Listeners
     document.addEventListener('click', event => {
       const element = event.target;
-      element.matches('.square') ? Game.playTurn(event) : null;
-      element.matches('.restart-button') ? Game.startNewGame(Game.setGameFormData()) : null;
+      element.matches('.square') ? Game.selectSquare(event) : null;
+      element.matches('.restart-button') ? Game.startNewGame(GameSettings.returnGameSettingsData()) : null;
       element.matches('.game-settings-button') ? GameSettings.renderGameSettings() : null;
     });
 
+    // Change Event Listeners
     document.addEventListener('change', event => {
       const element = event.target;
       element.matches('.game-settings-form #players-input') ? GameSettings.toggleOnePlayerSettings(element[element.selectedIndex].value) : null;
     });
 
+    // Submit Event Listeners
     document.addEventListener('submit', event => {
       const element = event.target;
 
