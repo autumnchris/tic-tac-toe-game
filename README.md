@@ -2,6 +2,16 @@
 
 ---
 
+## Built With
+* JavaScript
+* [Sass](http://sass-lang.com)
+* HTML5
+* [Webpack](https://webpack.js.org)
+* [Babel](https://babeljs.io)
+* [Normalize.css](https://necolas.github.io/normalize.css)
+* [Font Awesome](https://fontawesome.com)
+* [Google Fonts](https://fonts.google.com)
+
 ## Instructions
 
 After forking and cloning, navigate to the repository in your command line and install the NPM packages:
