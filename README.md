@@ -12,6 +12,10 @@
 * [Font Awesome](https://fontawesome.com)
 * [Google Fonts](https://fonts.google.com)
 
+## Demo
+
+View project demo at [https://autumnchris.github.io/tic-tac-toe-game](https://autumnchris.github.io/tic-tac-toe-game).
+
 ## Instructions
 
 After forking and cloning, navigate to the repository in your command line and install the NPM packages:

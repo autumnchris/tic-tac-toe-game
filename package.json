@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/autumnchris/tic-tac-toe-game/issues"
   },
-  "homepage": "https://github.com/autumnchris/tic-tac-toe-game#readme",
+  "homepage": "https://autumnchris.github.io/tic-tac-toe-game",
   "dependencies": {
     "normalize.css": "^5.0.0"
   },
