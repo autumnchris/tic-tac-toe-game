@@ -1,7 +1,7 @@
 {
   "name": "tic-tac-toe-game",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Star Wars themed JavaScript Tic-Tac-Toe game where the user can choose to play either a 2-player game with another person present or a 1-player game against the computer.",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode production",
