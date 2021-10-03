@@ -17,7 +17,7 @@ const GameSettings = (() => {
   function renderGameSettings() {
     document.querySelector('.game-container').innerHTML = `<div class="game-settings-container">
       <h3>Start a New Game</h3>
-      <form class="game-settings-form">
+      <form class="game-settings-form" novalidate>
         <div class="form-group players">
           <label for="players-input">Players:</label>
           <div class="select-wrapper">
