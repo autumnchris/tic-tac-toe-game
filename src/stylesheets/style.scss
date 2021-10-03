@@ -16,6 +16,12 @@ html {
     overscroll-behavior: none;
     padding: 0 20px;
     position: relative;
+    header {	
+      padding: 20px 0;	
+    }	
+    main {	
+      padding-bottom: 6rem;	
+    }
     footer {
       bottom: 0;
       font-size: 0.8rem;
@@ -127,7 +133,9 @@ textarea:focus,
 
 .select-wrapper {
   border: 1px solid $star-wars-yellow;
+  font-size: 0.9rem;
   position: relative;
+  width: 100%;
   &:after {
     content: "\f0dc";
     cursor: pointer;
@@ -162,6 +170,136 @@ textarea:focus,
 
 // SPECIFIC ELEMENT STYLES
 
+.star-wars-logo {
+  margin: 20px auto 0;
+  max-width: 200px;
+  width: 100%;
+  @media all and (min-width: 500px) {
+    max-width: 350px;
+  }
+}
+
+h2 {
+  font-weight: 600;
+  letter-spacing: 5px;
+  padding-top: 15px;
+  text-transform: uppercase;
+}
+
+.rebellion-icon {
+  color: $jedi-blue;
+}
+.empire-icon {
+  color: $sith-red;
+}
+
+.game-settings-container {
+  margin: 0 auto;
+  max-width: 300px;
+  .form-group {
+    padding-bottom: 25px;
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding-bottom: 8px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.board-container {
+  .current-turn-message {
+    font-weight: 600;
+  }
+  .game-board {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    margin: 30px auto;
+    max-width: 216px;
+    .square-container {
+      background: transparent;
+      font-size: 3rem;
+      height: 80px;
+      width: 80px;
+      @media all and (min-width: 500px) {
+        font-size: 3.6rem;
+        height: 100px;
+        width: 100px;
+      }
+      &:first-child,
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(6) {
+        border-bottom: 3px solid $star-wars-yellow;
+      }
+      &:first-child,
+      &:nth-child(2),
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(7),
+      &:nth-child(8) {
+        border-right: 3px solid $star-wars-yellow;
+      }
+    }
+    .square {
+      align-items: center;
+      background: $black;
+      border: 3px solid black;
+      display: flex;
+      cursor: pointer;
+      height: 100%;
+      width: 100%;
+      justify-content: center;
+      &.selected,
+      &.game-ended {
+        cursor: default;
+      }
+    }
+  }
+}
+
+.modal {
+  background: rgba($black, 0.75);
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  .modal-content {
+    animation: slideIn 0.3s ease-out;
+    background: $black;
+    border: 1px solid $star-wars-yellow;
+    margin: 10% auto 0;
+    max-width: 300px;
+    .modal-body {
+      padding: 20px;
+      .winning-player-icon {
+        display: flex;
+        font-size: 2.8rem;
+        justify-content: center;
+        span {
+          margin: 5px;
+        }
+      }
+      p {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
 .info-message {
   background: change-color($info-blue, $lightness: 95%);
   border: 1px solid change-color($info-blue, $lightness: 90%);
@@ -178,4 +316,13 @@ noscript .info-message {
   -webkit-transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+@keyframes slideIn {
+  from {
+    margin-top: 0;
+  }
+  to {
+    margin-top: 10%;
+  }
 }
