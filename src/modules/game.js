@@ -107,6 +107,8 @@ const Game = (() => {
 
   function handleMinimax(boardCopy, player) {
     const availableSquares = checkAvailableSquares(boardCopy);
+    let bestTestMove = null;
+    let bestScore;
 
     // Human player (minimizing player)
     if (checkForWinner(playerOne)) {
@@ -120,29 +122,27 @@ const Game = (() => {
       return { score: 0 };
     }
     else {
-      let testMoves = [];
-
-      for(let i = 0; i < availableSquares.length; i++) {
+      const testMoves = availableSquares.reduce((acc, square) => {
         let testMove = {};
-        testMove.index = boardCopy[availableSquares[i]];
-        boardCopy[availableSquares[i]] = player.toLowerCase();
+        let result;
+        testMove.index = boardCopy[square];
+        boardCopy[square] = player.toLowerCase();
 
         if (player === playerTwo.playAs) {
-          let result = handleMinimax(boardCopy, playerOne.playAs);
+          result = handleMinimax(boardCopy, playerOne.playAs);
           testMove.score = result.score;
         }
         else {
-          let result = handleMinimax(boardCopy, playerTwo.playAs);
+          result = handleMinimax(boardCopy, playerTwo.playAs);
           testMove.score = result.score;
         }
-        boardCopy[availableSquares[i]] = testMove.index;
-        testMoves.push(testMove);
-      }
-
-      let bestTestMove = null;
+        boardCopy[square] = testMove.index;
+        acc.push(testMove);
+        return acc;
+      }, []);
 
       if (player === playerTwo.playAs) {
-        let bestScore = -Infinity;
+        bestScore = -Infinity;
 
         for(let i = 0; i < testMoves.length; i++) {
 
@@ -153,7 +153,7 @@ const Game = (() => {
         }
       }
       else {
-        let bestScore = Infinity;
+        bestScore = Infinity;
 
         for(let i = 0; i < testMoves.length; i++) {
 
