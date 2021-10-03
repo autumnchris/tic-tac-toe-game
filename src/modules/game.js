@@ -1,6 +1,8 @@
+import { GameSettings } from './game-settings';
 import { NewGameModal } from './new-game-modal';
 
 const Game = (() => {
+  // List of possibilities for a player to win the game
   const winningCombinations = [
     [ 0, 1, 2 ],
     [ 3, 4, 5 ],
@@ -11,12 +13,12 @@ const Game = (() => {
     [ 0, 4, 8 ],
     [ 2, 4, 6 ]
   ];
-  let gameFormData;
   let board;
   let playerOne;
   let playerTwo;
-  let currentPlayer;
+  let currentPlayer = null;
 
+  // Factory function to create data for a new player for the current game
   const Player = (playerType, playAs) => {
     return {
       playerType,
@@ -24,29 +26,27 @@ const Game = (() => {
     };
   };
 
+  // Creates the DOM elements for the game board
   function renderGameBoard(firstPlayer) {
     document.querySelector('.game-container').innerHTML = `<div class="board-container">
       <p class="current-turn-message">The ${firstPlayer.playAs} goes first!</p>
       <div class="game-board">
         ${board.map((square, index) => {
-          return `<div class="square fab" id="${index}"></div>`;
+          return `<div class="square-container">
+            <div class="square fab" id="${index}"></div>
+          </div>`;
         }).join('')}
       </div>
       <button type="button" class="button restart-button">Restart</button>
     </div>`;
   }
 
-  function setGameFormData(newGameFormData) {
-    if (newGameFormData) gameFormData = newGameFormData;
-    return gameFormData;
-  }
+  function startNewGame(gameSettingsData) {
+    board = new Array(9).fill().map((square, index) => index);
 
-  function startNewGame(gameData) {
-    board = new Array(9).fill('');
-
-    if (gameData.players === '1-player') {
-      playerOne = Player('human', gameData.playAs);
-      playerTwo = Player('ai', gameData.playAs === 'Rebellion' ? 'Empire' : 'Rebellion');
+    if (gameSettingsData.players === '1-player') {
+      playerOne = Player('human', gameSettingsData.playAs);
+      playerTwo = Player('ai', gameSettingsData.playAs === 'Rebellion' ? 'Empire' : 'Rebellion');
     }
     else {
       playerOne = Player('human', 'Rebellion');
@@ -58,13 +58,13 @@ const Game = (() => {
     NewGameModal.closeNewGameModal();
   }
 
-  function playTurn(event) {
+  function playTurn(square) {
 
-    if (!board[event.target.id]) {
-      board[event.target.id] = currentPlayer.playAs.toLowerCase();
-      document.getElementById(event.target.id).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, currentPlayer.playAs.toLowerCase(), 'selected');
+    if (typeof board[square] === 'number') {
+      board[square] = currentPlayer.playAs.toLowerCase();
+      document.getElementById(square).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, `${currentPlayer.playAs.toLowerCase()}-icon`, 'selected');
 
-      if (checkForWinner(currentPlayer.playAs)) {
+      if (checkForWinner(currentPlayer)) {
         endGame(currentPlayer.playAs);
       }
       else if (checkForDraw()) {
@@ -73,34 +73,134 @@ const Game = (() => {
       else {
         currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
         document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer.playAs}'s turn.`;
+        if (currentPlayer.playerType === 'ai') changeToAiTurn();
       }
     }
   }
 
+  // Click handler that allows the current player to select a square if it is the user's turn
+  function selectSquare(event) {
+
+    if (currentPlayer.playerType === 'human') {
+      playTurn(event.target.id);
+    }
+  }
+
+  function changeToAiTurn() {
+
+    if (GameSettings.returnGameSettingsData().difficulty === 'hard') {
+      playSmartAiTurn();
+    }
+    else {
+      playRandomAiTurn();
+    }
+  }
+
+  function playRandomAiTurn() {
+    let availableSquares = checkAvailableSquares();
+    playTurn(availableSquares[Math.floor(Math.random() * availableSquares.length)]);
+  }
+
+  function playSmartAiTurn() {
+    playTurn(handleMinimax(board, playerTwo.playAs).index);
+  }
+
+  function handleMinimax(boardCopy, player) {
+    const availableSquares = checkAvailableSquares(boardCopy);
+
+    // Human player (minimizing player)
+    if (checkForWinner(playerOne)) {
+      return { score: -1 };
+    }
+    // AI player (maximizing player)
+    else if (checkForWinner(playerTwo)) {
+      return { score: 1 };
+    }
+    else if (checkForDraw()) {
+      return { score: 0 };
+    }
+    else {
+      let testMoves = [];
+
+      for(let i = 0; i < availableSquares.length; i++) {
+        let testMove = {};
+        testMove.index = boardCopy[availableSquares[i]];
+        boardCopy[availableSquares[i]] = player.toLowerCase();
+
+        if (player === playerTwo.playAs) {
+          let result = handleMinimax(boardCopy, playerOne.playAs);
+          testMove.score = result.score;
+        }
+        else {
+          let result = handleMinimax(boardCopy, playerTwo.playAs);
+          testMove.score = result.score;
+        }
+        boardCopy[availableSquares[i]] = testMove.index;
+        testMoves.push(testMove);
+      }
+
+      let bestTestMove = null;
+
+      if (player === playerTwo.playAs) {
+        let bestScore = -Infinity;
+
+        for(let i = 0; i < testMoves.length; i++) {
+
+          if (testMoves[i].score > bestScore) {
+            bestScore = testMoves[i].score;
+            bestTestMove = i;
+          }
+        }
+      }
+      else {
+        let bestScore = Infinity;
+
+        for(let i = 0; i < testMoves.length; i++) {
+
+          if (testMoves[i].score < bestScore) {
+            bestScore = testMoves[i].score;
+            bestTestMove = i;
+          }
+        }
+      }
+      return testMoves[bestTestMove];
+    }
+  }
+
+  // Checks to see which squares on the board haven't been played yet in the current game
+  function checkAvailableSquares() {
+    return board.filter(square => typeof square === 'number');
+  }
+
+  // Checks the board to see if the current player has matched one of the possible winning combinations
   function checkForWinner(player) {
     return winningCombinations.some(combination => {
       return combination.every(val => {
-        return board[val] === player.toLowerCase();
+        return board[val] === player.playAs.toLowerCase();
       });
     });
   }
 
+  // Checks the board to see if every square has been filled without a winner
   function checkForDraw() {
     return board.every(square => {
-      return square;
+      return square === 'rebellion' || square === 'empire';
     });
   }
 
+  // Ends the current game if a player has won or if there is a draw
   function endGame(winner) {
     let endGameMessage;
     winner === 'draw' ? endGameMessage = 'It\'s a draw!' : endGameMessage = `The ${winner} won!`;
     NewGameModal.openNewGameModal(endGameMessage, winner);
+    document.querySelectorAll('.square').forEach(square => {
+      square.classList.add('game-ended');
+    });
   }
 
   return {
-    setGameFormData,
     startNewGame,
-    playTurn
+    selectSquare
   };
 })();
 
