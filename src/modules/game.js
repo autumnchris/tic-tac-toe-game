@@ -73,7 +73,7 @@ const Game = (() => {
       else {
         currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
         document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer.playAs}'s turn.`;
-        if (currentPlayer.playerType === 'ai') changeToAiTurn();
+        if (currentPlayer.playerType === 'ai') setTimeout(changeToAiTurn, 1200);
       }
     }
   }
