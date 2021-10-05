@@ -13,6 +13,7 @@ const Game = (() => {
     [ 0, 4, 8 ],
     [ 2, 4, 6 ]
   ];
+  // The current state of the game board
   let board;
   let playerOne;
   let playerTwo;
@@ -41,6 +42,7 @@ const Game = (() => {
     </div>`;
   }
 
+  // Resets and renders the game board for a new game
   function startNewGame(gameSettingsData) {
     board = new Array(9).fill().map((square, index) => index);
 
@@ -58,6 +60,7 @@ const Game = (() => {
     NewGameModal.closeNewGameModal();
   }
 
+  // Plays the current player's selected square and then changes to the opposing player's turn if the game hasn't ended
   function playTurn(square) {
 
     if (typeof board[square] === 'number') {
@@ -87,6 +90,7 @@ const Game = (() => {
     }
   }
 
+  // Determines whether to play the Easy AI or the Hard AI
   function changeToAiTurn() {
 
     if (GameSettings.returnGameSettingsData().difficulty === 'hard') {
@@ -97,15 +101,18 @@ const Game = (() => {
     }
   }
 
+  // AI picks an unplayed square at random (Easy mode)
   function playRandomAiTurn() {
     let availableSquares = checkAvailableSquares();
     playTurn(availableSquares[Math.floor(Math.random() * availableSquares.length)]);
   }
 
+  // AI picks an unplayed square using the minimax algorithm (Hard mode)
   function playSmartAiTurn() {
     playTurn(handleMinimax(board, playerTwo.playAs).index);
   }
 
+  // Minimax algorithm which determines the best move the AI should play against the user during its turn
   function handleMinimax(boardCopy, player) {
     const availableSquares = checkAvailableSquares(boardCopy);
     let bestTestMove = null;
@@ -123,6 +130,7 @@ const Game = (() => {
       return { score: 0 };
     }
     else {
+      // Recursively tests potential move outcomes for the current player
       const testMoves = availableSquares.reduce((acc, square) => {
         let testMove = {};
         let result;
@@ -142,6 +150,7 @@ const Game = (() => {
         return acc;
       }, []);
 
+      // Uses array of test scores to determine the best move for the AI to play
       if (player === playerTwo.playAs) {
         bestScore = -Infinity;
 
@@ -173,6 +182,7 @@ const Game = (() => {
     return board.filter(square => typeof square === 'number');
   }
 
+  // Adds a highlighted background on the winning squares when a player wins
   function highlightWinningSquares(player) {
     const winningSquares = checkForWinner(player);
     return winningSquares.map(square => {
@@ -192,7 +202,7 @@ const Game = (() => {
   // Checks the board to see if every square has been filled without a winner
   function checkForDraw() {
     return board.every(square => {
-      return square === 'rebellion' || square === 'empire';
+      return typeof square !== 'number';
     });
   }
 

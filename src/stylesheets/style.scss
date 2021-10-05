@@ -125,7 +125,7 @@ textarea:focus,
   padding: 6px 8px;
   width: auto;
   &:hover {
-    background: transparent;
+    background: $black;
     color: $star-wars-yellow;
     text-decoration: none;
   }
@@ -212,9 +212,7 @@ h2 {
     padding-bottom: 25px;
     label {
       display: block;
-      font-size: 0.8rem;
       font-size: 0.7rem;
-      font-weight: 600;
       font-weight: 700;
       letter-spacing: 2px;
       padding-bottom: 8px;
@@ -237,9 +235,7 @@ h2 {
     -ms-flex-pack: center;
     justify-content: center;
     margin: 30px auto;
-    max-width: 216px;
     .square-container {
-      background: transparent;
       font-size: 3rem;
       height: 80px;
       width: 80px;
