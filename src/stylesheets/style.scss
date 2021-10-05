@@ -284,6 +284,10 @@ h2 {
       &.game-ended {
         cursor: default;
       }
+      &.winning-square {
+        background: $star-wars-yellow;
+        color: $black;
+      }
     }
   }
 }

@@ -65,6 +65,7 @@ const Game = (() => {
       document.getElementById(square).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, `${currentPlayer.playAs.toLowerCase()}-icon`, 'selected');
 
       if (checkForWinner(currentPlayer)) {
+        highlightWinningSquares(currentPlayer);
         endGame(currentPlayer.playAs);
       }
       else if (checkForDraw()) {
@@ -172,9 +173,16 @@ const Game = (() => {
     return board.filter(square => typeof square === 'number');
   }
 
+  function highlightWinningSquares(player) {
+    const winningSquares = checkForWinner(player);
+    return winningSquares.map(square => {
+      document.getElementById(square).classList.add('winning-square');
+    });
+  }
+
   // Checks the board to see if the current player has matched one of the possible winning combinations
   function checkForWinner(player) {
-    return winningCombinations.some(combination => {
+    return winningCombinations.find(combination => {
       return combination.every(val => {
         return board[val] === player.playAs.toLowerCase();
       });
