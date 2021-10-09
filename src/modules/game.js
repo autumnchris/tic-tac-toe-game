@@ -18,6 +18,7 @@ const Game = (() => {
   let playerOne;
   let playerTwo;
   let currentPlayer = null;
+  let aiMoveDelay;
 
   // Factory function to create data for a new player for the current game
   const Player = (playerType, playAs) => {
@@ -44,6 +45,7 @@ const Game = (() => {
 
   // Resets and renders the game board for a new game
   function startNewGame(gameSettingsData) {
+    clearTimeout(aiMoveDelay);
     board = new Array(9).fill().map((square, index) => index);
 
     if (gameSettingsData.players === '1-player') {
@@ -77,7 +79,7 @@ const Game = (() => {
       else {
         currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
         document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer.playAs}'s turn.`;
-        if (currentPlayer.playerType === 'ai') setTimeout(changeToAiTurn, 1200);
+        if (currentPlayer.playerType === 'ai') aiMoveDelay = setTimeout(changeToAiTurn, 1200);
       }
     }
   }
