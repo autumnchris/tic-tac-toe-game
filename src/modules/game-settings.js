@@ -21,14 +21,14 @@ const GameSettings = (() => {
         <div class="form-group players">
           <label for="players-input">Players:</label>
           <div class="select-wrapper">
-            <select name="players" id="players-input">
+            <select name="players" id="players-input" required>
               <option value="1-player" selected>Organic vs. Droid (1-Player)</option>
               <option value="2-player">Organic vs. Organic (2-Player)</option>
             </select>
           </div>
         </div>
         <div class="button-group">
-          <input type="submit" class="button start-button" value="Start" />
+          <button type="submit" class="button start-button">Start</button>
         </div>
       </form>
     </div>`;
@@ -48,7 +48,7 @@ const GameSettings = (() => {
       <div class="form-group one-player-setting difficulty">
         <label for="difficulty-input">Difficulty:</label>
         <div class="select-wrapper">
-          <select name="difficulty" id="difficulty-input">
+          <select name="difficulty" id="difficulty-input" required>
             <option value="easy" selected>Easy</option>
             <option value="hard">Hard</option>
           </select>
@@ -57,7 +57,7 @@ const GameSettings = (() => {
       <div class="form-group one-player-setting play-as">
         <label for="play-as-input">Play as:</label>
         <div class="select-wrapper">
-          <select name="play-as" id="play-as-input">
+          <select name="play-as" id="play-as-input" required>
             <option value="Rebellion" selected>Rebel Alliance</option>
             <option value="Empire">Galactic Empire</option>
           </select>
