@@ -9,13 +9,13 @@
 
 html {
   background: transparent;
-  color: $star-wars-yellow;
   font-family: $main-font;
   height: 100%;
   letter-spacing: 1px;
   text-align: center;
   body {
     background: $black;
+    color: $star-wars-yellow;
     min-height: 100%;
     -ms-scroll-chaining: none;
     overscroll-behavior: none;
