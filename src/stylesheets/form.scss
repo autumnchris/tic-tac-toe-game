@@ -1,0 +1,62 @@
+// STYLES FOR GAME SETTINGS FORM
+
+input,
+select {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: $star-wars-yellow;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  padding: 8px;
+  width: 100%;
+}
+
+// Select element styles
+.select-wrapper {
+  border: 1px solid $star-wars-yellow;
+  font-size: 0.9rem;
+  position: relative;
+  width: 100%;
+  &:after {
+    content: "\f0dc";
+    cursor: pointer;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    pointer-events: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+}
+
+.select-wrapper select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: inherit;
+  color: inherit;
+  cursor: pointer;
+  &::-ms-expand {
+    display: none;
+  }
+}
+
+.game-settings-container {
+  margin: 0 auto;
+  max-width: 300px;
+  .form-group {
+    padding-bottom: 25px;
+    label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding-bottom: 8px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+  }
+}

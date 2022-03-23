@@ -2,10 +2,13 @@
 
 // BASE PAGE STYLES
 
-html {
-  background: transparent;
+* {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+html {
+  background: transparent;
   color: $star-wars-yellow;
   font-family: $main-font;
   height: 100%;
@@ -40,47 +43,15 @@ html {
     h4,
     h5,
     h6 {
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
       margin-top: 0;
     }
+    h2 {
+      font-weight: 600;
+      letter-spacing: 5px;
+      padding-top: 15px;
+      text-transform: uppercase;
+    }
   }
-}
-
-// BASE ELEMENT STYLES
-
-div,
-header,
-main,
-footer,
-form,
-label,
-input,
-select,
-button,
-button:hover,
-button:active,
-button:focus {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-img {
-  display: block;
-  height: auto;
-  max-width: 100%;
-}
-
-input,
-select {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  color: $star-wars-yellow;
-  letter-spacing: 1px;
-  line-height: 1.3;
-  padding: 8px;
-  width: 100%;
 }
 
 a,
@@ -107,94 +78,10 @@ textarea:focus,
   outline: none;
 }
 
-.button,
-.button:visited,
-.button:hover,
-.button:active,
-.button:focus {
-  background: $star-wars-yellow;
-  border: 2px solid $star-wars-yellow;
-  border-radius: 4px;
-  color: $black;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  line-height: normal;
-  margin: 0 6px;
-  padding: 6px 8px;
-  width: auto;
-  &:hover {
-    background: $black;
-    color: $star-wars-yellow;
-    text-decoration: none;
-  }
-}
-
-.button-group {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-}
-
-.select-wrapper {
-  border: 1px solid $star-wars-yellow;
-  font-size: 0.9rem;
-  position: relative;
-  width: 100%;
-  &:after {
-    content: "\f0dc";
-    cursor: pointer;
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    pointer-events: none;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-  }
-}
-
-.select-wrapper select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: transparent;
-  border: 0;
-  border-radius: inherit;
-  color: inherit;
-  cursor: pointer;
-  &::-ms-expand {
-    display: none;
-  }
-}
-
-.message {
-  border-radius: 5px;
-  line-height: 1.55;
-  margin: 20px auto;
-  max-width: 800px;
-  padding: 15px 10px;
-}
-
-// SPECIFIC ELEMENT STYLES
-
-.star-wars-logo {
-  margin: 20px auto 0;
-  max-width: 200px;
-  width: 100%;
-  @media all and (min-width: 500px) {
-    max-width: 350px;
-  }
-}
-
-h2 {
-  font-weight: 600;
-  letter-spacing: 5px;
-  padding-top: 15px;
-  text-transform: uppercase;
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
 .rebellion-icon {
@@ -205,126 +92,13 @@ h2 {
   color: $sith-red;
 }
 
-.game-settings-container {
-  margin: 0 auto;
-  max-width: 300px;
-  .form-group {
-    padding-bottom: 25px;
-    label {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      padding-bottom: 8px;
-      text-align: left;
-      text-transform: uppercase;
-    }
-  }
-}
-
-.board-container {
-  .current-turn-message {
-    font-weight: 600;
-  }
-  .game-board {
-    display: -ms-grid;
-    display: grid;
-    -ms-grid-columns: auto auto auto;
-    grid-template-columns: auto auto auto;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin: 30px auto;
-    .square-container {
-      font-size: 3rem;
-      height: 80px;
-      width: 80px;
-      @media all and (min-width: 500px) {
-        font-size: 3.6rem;
-        height: 100px;
-        width: 100px;
-      }
-      &:first-child,
-      &:nth-child(2),
-      &:nth-child(3),
-      &:nth-child(4),
-      &:nth-child(5),
-      &:nth-child(6) {
-        border-bottom: 3px solid $star-wars-yellow;
-      }
-      &:first-child,
-      &:nth-child(2),
-      &:nth-child(4),
-      &:nth-child(5),
-      &:nth-child(7),
-      &:nth-child(8) {
-        border-right: 3px solid $star-wars-yellow;
-      }
-    }
-    .square {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      background: $black;
-      border: 3px solid $black;
-      cursor: pointer;
-      height: 100%;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      width: 100%;
-      &.selected,
-      &.game-ended {
-        cursor: default;
-      }
-      &.winning-square {
-        background: $star-wars-yellow;
-        color: $black;
-      }
-    }
-  }
-}
-
-.modal {
-  background: rgba($black, 0.75);
-  bottom: 0;
-  height: 100%;
-  left: 0;
-  overflow: auto;
-  position: fixed;
-  right: 0;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-  .modal-content {
-    -webkit-animation: slideIn 0.3s ease-out;
-    animation: slideIn 0.3s ease-out;
-    background: $black;
-    border: 1px solid $star-wars-yellow;
-    margin: 10% auto 0;
-    max-width: 300px;
-    .modal-body {
-      padding: 20px;
-      .winning-player-icon {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        font-size: 2.8rem;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        span {
-          margin: 5px;
-        }
-      }
-      p {
-        font-weight: 600;
-      }
-    }
-  }
+// Message styles
+.message {
+  border-radius: 5px;
+  line-height: 1.55;
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 15px 10px;
 }
 
 .info-message {
@@ -345,20 +119,5 @@ noscript .info-message {
   transform: translate(-50%, -50%);
 }
 
-@-webkit-keyframes slideIn {
-  from {
-    margin-top: 0;
-  }
-  to {
-    margin-top: 10%;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    margin-top: 0;
-  }
-  to {
-    margin-top: 10%;
-  }
-}
+@import "main";
+@import "form";
