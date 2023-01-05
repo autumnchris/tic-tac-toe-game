@@ -16,6 +16,7 @@ const NewGameModal = (() => {
       </div>
     </div>`;
     document.querySelector('main').appendChild(newGameModal);
+    document.querySelector('body').classList.add('modal-open');
     renderWinningPlayerIcon(winner);
   }
 
@@ -23,6 +24,7 @@ const NewGameModal = (() => {
   function closeNewGameModal() {
     const newGameModal = document.getElementById('modal');
     newGameModal ? document.querySelector('main').removeChild(newGameModal) : null;
+    document.querySelector('body').classList.remove('modal-open');
   }
 
   // Creates the DOM elements for the icon of the winning player to be displayed within the modal
