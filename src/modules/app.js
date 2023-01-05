@@ -1,6 +1,6 @@
 import starWarsLogo from '../images/star-wars-logo.png';
-import { GameSettings } from './game-settings';
-import { Game } from './game';
+import { GameSettings } from './GameSettings';
+import { Game } from './Game';
 
 const App = (() => {
 

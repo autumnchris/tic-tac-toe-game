@@ -1,5 +1,5 @@
-import { Game } from "./game";
-import { NewGameModal } from "./new-game-modal";
+import { Game } from "./Game";
+import { NewGameModal } from "./NewGameModal";
 
 const GameSettings = (() => {
   let gameSettingsData;

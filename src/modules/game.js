@@ -1,5 +1,5 @@
-import { GameSettings } from './game-settings';
-import { NewGameModal } from './new-game-modal';
+import { GameSettings } from './GameSettings';
+import { NewGameModal } from './NewGameModal';
 
 const Game = (() => {
   // List of possibilities for a player to win the game
