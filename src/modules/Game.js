@@ -68,6 +68,7 @@ const Game = (() => {
     if (typeof board[square] === 'number') {
       board[square] = currentPlayer.playAs.toLowerCase();
       document.getElementById(square).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, `${currentPlayer.playAs.toLowerCase()}-icon`, 'selected');
+      document.getElementById(square).setAttribute('aria-label', currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire');
 
       if (checkForWinner(currentPlayer)) {
         highlightWinningSquares(currentPlayer);
