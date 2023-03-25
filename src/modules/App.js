@@ -1,4 +1,4 @@
-import starWarsLogo from '../images/star-wars-logo.png';
+import starWarsLogo from '../assets/images/star-wars-logo.png';
 import { GameSettings } from './GameSettings';
 import { Game } from './Game';
 
