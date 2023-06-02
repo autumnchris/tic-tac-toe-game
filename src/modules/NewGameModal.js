@@ -1,51 +1,52 @@
-const NewGameModal = (() => {
-
-  // Creates the DOM elements for a modal that tells the user who won and to allow them to start a new game
-  function openNewGameModal(endGameMessage, winner) {
-    const newGameModal = document.createElement('div');
-    newGameModal.classList.add('modal');
-    newGameModal.setAttribute('id', 'modal');
-    newGameModal.innerHTML = `<div class="modal-content">
-      <div class="modal-body">
-        <div class="winning-player-icon"></div>
-        <p>${endGameMessage}</p>
-        <div class="button-group">
-          <button type="button" class="button restart-button">Play Again</button>
-          <button type="button" class="button game-settings-button">Settings</button>
-        </div>
-      </div>
-    </div>`;
-    document.querySelector('main').appendChild(newGameModal);
-    document.querySelector('body').classList.add('modal-open');
-    renderWinningPlayerIcon(winner);
-  }
-
-  // Removes the DOM elements for the modal while it's currently displayed
-  function closeNewGameModal() {
-    const newGameModal = document.getElementById('modal');
-    newGameModal ? document.querySelector('main').removeChild(newGameModal) : null;
-    document.querySelector('body').classList.remove('modal-open');
-  }
-
-  // Creates the DOM elements for the icon of the winning player to be displayed within the modal
-  function renderWinningPlayerIcon(winner) {
-    let winningPlayerIcon;
+class NewGameModal {
+  // DOM methods
+  renderWinningPlayerIcon(winner, location) {
+    const winningPlayerIcon = document.createElement('div');
+    winningPlayerIcon.classList.add('winning-player-icon');
 
     if (winner === 'draw') {
-      winningPlayerIcon = `
-      <span class="fab fa-rebel rebellion-icon" aria-hidden="true"></span>
-      <span class="fab fa-empire empire-icon" aria-hidden="true"></span>`;
+      winningPlayerIcon.innerHTML = `
+        <span class="fab fa-rebel rebellion-icon" aria-hidden="true"></span>
+        <span class="fab fa-empire empire-icon" aria-hidden="true"></span>
+      `;
     }
     else {
-      winningPlayerIcon = `<span class="fab fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} ${winner.toLowerCase()}-icon" aria-hidden="true"></span>`;
+      winningPlayerIcon.innerHTML = `<span class="fab fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} ${winner.toLowerCase()}-icon" aria-hidden="true"></span>`;
     }
-    document.querySelector('.winning-player-icon').innerHTML = winningPlayerIcon;
+
+    if (typeof location === 'string') {
+      document.querySelector(location).appendChild(winningPlayerIcon);
+    }
+    else if (Array.isArray(location)) {
+      document.querySelector(location[0]).insertBefore(winningPlayerIcon, document.querySelector(location[1]));
+    }
+  }
+  
+  renderNewGameModal(endGameMessage, winner, location) {
+    const newGameModal = document.createElement('div');
+    newGameModal.setAttribute('id', 'modal');
+    newGameModal.classList.add('modal');
+    newGameModal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-body">
+          <p class="end-game-message">${endGameMessage}</p>
+          <div class="button-group">
+            <button type="button" class="button restart-button">Play Again</button>
+            <button type="button" class="button game-settings-button">Settings</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.querySelector(location).appendChild(newGameModal);
+    document.querySelector('body').classList.add('modal-open');
+    this.renderWinningPlayerIcon(winner, ['#modal .modal-body', '.end-game-message']);
   }
 
-  return {
-    openNewGameModal,
-    closeNewGameModal
-  };
-})();
+  removeNewGameModal(location) {
+    const newGameModal = document.querySelector(`${location} #modal`);
+    newGameModal ? document.querySelector(location).removeChild(newGameModal) : null;
+    document.querySelector('body').classList.remove('modal-open');
+  }
+}
 
-export { NewGameModal };
+export default NewGameModal;

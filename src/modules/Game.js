@@ -1,135 +1,112 @@
-import { GameSettings } from './GameSettings';
-import { NewGameModal } from './NewGameModal';
+import NewGameModal from './NewGameModal';
+import Player from './Player';
 
-const Game = (() => {
-  // List of possibilities for a player to win the game
-  const winningCombinations = [
-    [ 0, 1, 2 ],
-    [ 3, 4, 5 ],
-    [ 6, 7, 8 ],
-    [ 0, 3, 6 ],
-    [ 1, 4, 7 ],
-    [ 2, 5, 8 ],
-    [ 0, 4, 8 ],
-    [ 2, 4, 6 ]
-  ];
-  // The current state of the game board
-  let board;
-  let playerOne;
-  let playerTwo;
-  let currentPlayer = null;
-  let aiMoveDelay;
-
-  // Factory function to create data for a new player for the current game
-  const Player = (playerType, playAs) => {
-    return {
-      playerType,
-      playAs
-    };
-  };
-
-  // Creates the DOM elements for the game board
-  function renderGameBoard(firstPlayer) {
-    document.querySelector('.game-container').innerHTML = `<div class="board-container">
-      <p class="current-turn-message">The ${firstPlayer.playAs} goes first!</p>
-      <div class="game-board">
-        ${board.map((square, index) => {
-          return `<div class="square-container">
-            <div class="square fab" id="${index}"></div>
-          </div>`;
-        }).join('')}
-      </div>
-      <button type="button" class="button restart-button">Restart</button>
-    </div>`;
+class Game {
+  constructor() {
+    this.newGameModal = new NewGameModal();
+    this.winningCombinations = [
+      [ 0, 1, 2 ],
+      [ 3, 4, 5 ],
+      [ 6, 7, 8 ],
+      [ 0, 3, 6 ],
+      [ 1, 4, 7 ],
+      [ 2, 5, 8 ],
+      [ 0, 4, 8 ],
+      [ 2, 4, 6 ]
+    ];
+    this.gameSettings;
+    this.board;
+    this.playerOne;
+    this.playerTwo;
+    this.currentPlayer = null;
+    this.aiMoveDelay;
   }
 
   // Resets and renders the game board for a new game
-  function startNewGame(gameSettingsData) {
-    clearTimeout(aiMoveDelay);
-    board = new Array(9).fill().map((square, index) => index);
+  startNewGame(gameSettings) {
+    clearTimeout(this.aiMoveDelay);
+    this.gameSettings = gameSettings;
+    this.board = new Array(9).fill().map((square, index) => index);
 
-    if (gameSettingsData.players === '1-player') {
-      playerOne = Player('human', gameSettingsData.playAs);
-      playerTwo = Player('ai', gameSettingsData.playAs === 'Rebellion' ? 'Empire' : 'Rebellion');
+    if (gameSettings.players === '1-player') {
+      this.playerOne = new Player('human', gameSettings.playAs);
+      this.playerTwo = new Player('ai', gameSettings.playAs === 'Rebellion' ? 'Empire' : 'Rebellion');
     }
     else {
-      playerOne = Player('human', 'Rebellion');
-      playerTwo = Player('human', 'Empire');
+      this.playerOne = new Player('human', 'Rebellion');
+      this.playerTwo = new Player('human', 'Empire');
     }
-
-    currentPlayer = playerOne;
-    renderGameBoard(currentPlayer);
-    NewGameModal.closeNewGameModal();
-  }
-
-  // Plays the current player's selected square and then changes to the opposing player's turn if the game hasn't ended
-  function playTurn(square) {
-
-    if (typeof board[square] === 'number') {
-      board[square] = currentPlayer.playAs.toLowerCase();
-      document.getElementById(square).classList.add(`fa-${currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, `${currentPlayer.playAs.toLowerCase()}-icon`, 'selected');
-      document.getElementById(square).setAttribute('aria-label', currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire');
-
-      if (checkForWinner(currentPlayer)) {
-        highlightWinningSquares(currentPlayer);
-        endGame(currentPlayer.playAs);
-      }
-      else if (checkForDraw()) {
-        endGame('draw');
-      }
-      else {
-        currentPlayer === playerOne ? currentPlayer = playerTwo : currentPlayer = playerOne;
-        document.querySelector('.current-turn-message').innerHTML = `It's the ${currentPlayer.playAs}'s turn.`;
-        if (currentPlayer.playerType === 'ai') aiMoveDelay = setTimeout(changeToAiTurn, 1200);
-      }
-    }
+    this.currentPlayer = this.playerOne;
+    this.newGameModal.removeNewGameModal('main');
+    this.removeGameBoard('.game-container');
+    this.renderGameBoard(this.currentPlayer, '.game-container');
   }
 
   // Click handler that allows the current player to select a square if it is the user's turn
-  function selectSquare(event) {
+  selectSquare(event) {
+    if (this.currentPlayer.playerType === 'human') {
+      this.playTurn(event.target.id);
+    }
+  }
 
-    if (currentPlayer.playerType === 'human') {
-      playTurn(event.target.id);
+  // Plays the current player's selected square and then changes to the opposing player's turn if the game hasn't ended
+  playTurn(square) {
+
+    if (typeof this.board[square] === 'number') {
+      this.board[square] = this.currentPlayer.playAs.toLowerCase();
+      this.addAttributesToSelectedSquare(square);
+
+      if (this.checkForWinner(this.currentPlayer)) {
+        this.highlightWinningSquares(this.currentPlayer);
+        this.endGame(this.currentPlayer.playAs);
+      }
+      else if (this.checkForDraw()) {
+        this.endGame('draw');
+      }
+      else {
+        this.currentPlayer === this.playerOne ? this.currentPlayer = this.playerTwo : this.currentPlayer = this.playerOne;
+        this.updateCurrentTurnMessage();
+        if (this.currentPlayer.playerType === 'ai') this.aiMoveDelay = setTimeout(this.changeToAiTurn.bind(this), 1200);
+      }
     }
   }
 
   // Determines whether to play the Easy AI or the Hard AI
-  function changeToAiTurn() {
-
-    if (GameSettings.returnGameSettingsData().difficulty === 'hard') {
-      playSmartAiTurn();
+  changeToAiTurn() {
+    if (this.gameSettings.difficulty === 'hard') {
+      this.playSmartAiTurn();
     }
     else {
-      playRandomAiTurn();
+      this.playRandomAiTurn();
     }
   }
 
   // AI picks an unplayed square at random (Easy mode)
-  function playRandomAiTurn() {
-    let availableSquares = checkAvailableSquares();
-    playTurn(availableSquares[Math.floor(Math.random() * availableSquares.length)]);
+  playRandomAiTurn() {
+    let availableSquares = this.checkAvailableSquares();
+    this.playTurn(availableSquares[Math.floor(Math.random() * availableSquares.length)]);
   }
 
   // AI picks an unplayed square using the minimax algorithm (Hard mode)
-  function playSmartAiTurn() {
-    playTurn(handleMinimax(board, playerTwo.playAs).index);
+  playSmartAiTurn() {
+    this.playTurn(this.handleMinimax(this.board, this.playerTwo.playAs).index);
   }
 
   // Minimax algorithm which determines the best move the AI should play against the user during its turn
-  function handleMinimax(boardCopy, player) {
-    const availableSquares = checkAvailableSquares(boardCopy);
+  handleMinimax(board, player) {
+    const availableSquares = this.checkAvailableSquares(board);
     let bestTestMove = null;
     let bestScore;
 
     // Human player (minimizing player)
-    if (checkForWinner(playerOne)) {
+    if (this.checkForWinner(this.playerOne)) {
       return { score: -1 };
     }
     // AI player (maximizing player)
-    else if (checkForWinner(playerTwo)) {
+    else if (this.checkForWinner(this.playerTwo)) {
       return { score: 1 };
     }
-    else if (checkForDraw()) {
+    else if (this.checkForDraw()) {
       return { score: 0 };
     }
     else {
@@ -137,24 +114,24 @@ const Game = (() => {
       const testMoves = availableSquares.reduce((acc, square) => {
         let testMove = {};
         let result;
-        testMove.index = boardCopy[square];
-        boardCopy[square] = player.toLowerCase();
+        testMove.index = board[square];
+        board[square] = player.toLowerCase();
 
-        if (player === playerTwo.playAs) {
-          result = handleMinimax(boardCopy, playerOne.playAs);
+        if (player === this.playerTwo.playAs) {
+          result = this.handleMinimax(board, this.playerOne.playAs);
           testMove.score = result.score;
         }
         else {
-          result = handleMinimax(boardCopy, playerTwo.playAs);
+          result = this.handleMinimax(board, this.playerTwo.playAs);
           testMove.score = result.score;
         }
-        boardCopy[square] = testMove.index;
+        board[square] = testMove.index;
         acc.push(testMove);
         return acc;
       }, []);
 
       // Uses array of test scores to determine the best move for the AI to play
-      if (player === playerTwo.playAs) {
+      if (player === this.playerTwo.playAs) {
         bestScore = -Infinity;
 
         for(let i = 0; i < testMoves.length; i++) {
@@ -180,49 +157,84 @@ const Game = (() => {
     }
   }
 
-  // Checks to see which squares on the board haven't been played yet in the current game
-  function checkAvailableSquares() {
-    return board.filter(square => typeof square === 'number');
-  }
-
-  // Adds a highlighted background on the winning squares when a player wins
-  function highlightWinningSquares(player) {
-    const winningSquares = checkForWinner(player);
-    return winningSquares.map(square => {
-      document.getElementById(square).classList.add('winning-square');
-    });
-  }
-
   // Checks the board to see if the current player has matched one of the possible winning combinations
-  function checkForWinner(player) {
-    return winningCombinations.find(combination => {
+  checkForWinner(player) {
+    return this.winningCombinations.find(combination => {
       return combination.every(val => {
-        return board[val] === player.playAs.toLowerCase();
+        return this.board[val] === player.playAs.toLowerCase();
       });
     });
   }
 
   // Checks the board to see if every square has been filled without a winner
-  function checkForDraw() {
-    return board.every(square => {
+  checkForDraw() {
+    return this.board.every(square => {
       return typeof square !== 'number';
     });
   }
 
+  // Checks to see which squares on the board haven't been played yet in the current game
+  checkAvailableSquares() {
+    return this.board.filter(square => typeof square === 'number');
+  }
+
   // Ends the current game if a player has won or if there is a draw
-  function endGame(winner) {
+  endGame(winner) {
     let endGameMessage;
     winner === 'draw' ? endGameMessage = 'It\'s a draw!' : endGameMessage = `The ${winner} won!`;
-    NewGameModal.openNewGameModal(endGameMessage, winner);
+    this.newGameModal.renderNewGameModal(endGameMessage, winner, 'main');
     document.querySelectorAll('.square').forEach(square => {
       square.classList.add('game-ended');
     });
   }
 
-  return {
-    startNewGame,
-    selectSquare
-  };
-})();
+  // Event listeners
+  events() {
+    document.addEventListener('click', event => {
+      const element = event.target;
+      element.matches('.game-board .square-container .square') ? this.selectSquare(event) : null;
+      element.matches('#modal .restart-button') ? this.startNewGame(this.gameSettings) : null;
+    });
+  }
 
-export { Game };
+  // DOM methods
+  updateCurrentTurnMessage() {
+    const currentTurnMessage = document.querySelector('.current-turn-message');
+    currentTurnMessage.innerHTML = `It's the ${this.currentPlayer.playAs}'s turn.`;;
+  }
+
+  addAttributesToSelectedSquare(square) {
+    document.getElementById(square).classList.add(`fa-${this.currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire'}`, `${this.currentPlayer.playAs.toLowerCase()}-icon`, 'selected');
+    document.getElementById(square).setAttribute('aria-label', this.currentPlayer.playAs === 'Rebellion' ? 'rebel' : 'empire');
+  }
+
+  highlightWinningSquares(player) {
+    const winningSquares = this.checkForWinner(player);
+    return winningSquares.map(square => {
+      document.getElementById(square).classList.add('winning-square');
+    });
+  }
+
+  renderGameBoard(firstPlayer, location) {
+    const gameBoard = document.createElement('div');
+    gameBoard.classList.add('board-container');
+    gameBoard.innerHTML = `
+      <p class="current-turn-message">The ${firstPlayer.playAs} goes first!</p>
+      <div class="game-board">${this.board.map((square, index) => {
+        return `<div class="square-container">
+          <div class="square fab" id="${index}"></div>
+        </div>`;
+      }).join('')}</div>
+      <button type="button" class="button restart-button">Restart</button>
+    `;
+    document.querySelector(location).appendChild(gameBoard);
+    this.events();
+  }
+
+  removeGameBoard(location) {
+    const gameBoard = document.querySelector(`${location} .board-container`);
+    gameBoard ? document.querySelector(location).removeChild(gameBoard) : null;
+  }
+}
+
+export default Game;
