@@ -7,8 +7,10 @@ Inspired by the [Tic Tac Toe assignment](https://www.theodinproject.com/lessons/
 ---
 
 ## Built With
+* Vanilla JS
 * JavaScript
 * [Sass](http://sass-lang.com)
+* CSS3
 * HTML5
 * [Webpack](https://webpack.js.org)
 * [Babel](https://babeljs.io)
