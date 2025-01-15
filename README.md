@@ -12,6 +12,7 @@ Inspired by the [Tic Tac Toe assignment](https://www.theodinproject.com/lessons/
 * [Sass](http://sass-lang.com)
 * CSS3
 * HTML5
+* [Node.js](https://nodejs.org/en)
 * [Webpack](https://webpack.js.org)
 * [Babel](https://babeljs.io)
 * [Normalize.css](https://necolas.github.io/normalize.css)
