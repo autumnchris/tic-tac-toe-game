@@ -60,9 +60,8 @@ a:hover,
 a:active,
 a:focus {
   color: change-color($black, $lightness: 100%);
-  text-decoration: none;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 }
 
