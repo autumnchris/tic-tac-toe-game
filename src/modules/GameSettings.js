@@ -37,7 +37,7 @@ class GameSettings {
       <div class="form-group one-player-setting difficulty">
         <label for="difficulty-input">Difficulty:</label>
         <div class="select-wrapper">
-          <select name="difficulty" id="difficulty-input" required>
+          <select name="difficulty" id="difficulty-input" autocomplete="off" required>
             <option value="easy" selected>Easy</option>
             <option value="hard">Hard</option>
           </select>
@@ -46,7 +46,7 @@ class GameSettings {
       <div class="form-group one-player-setting play-as">
         <label for="play-as-input">Play as:</label>
         <div class="select-wrapper">
-          <select name="playAs" id="play-as-input" required>
+          <select name="playAs" id="play-as-input" autocomplete="off" required>
             <option value="Rebellion" selected>Rebel Alliance</option>
             <option value="Empire">Galactic Empire</option>
           </select>
@@ -76,7 +76,7 @@ class GameSettings {
         <div class="form-group players">
           <label for="players-input">Players:</label>
           <div class="select-wrapper">
-            <select name="players" id="players-input" required>
+            <select name="players" id="players-input" autocomplete="off" required>
               <option value="1-player" selected>Organic vs. Droid (1-Player)</option>
               <option value="2-player">Organic vs. Organic (2-Player)</option>
             </select>
