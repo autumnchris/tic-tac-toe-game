@@ -6,12 +6,12 @@ class NewGameModal {
 
     if (winner === 'draw') {
       winningPlayerIcon.innerHTML = `
-        <span class="fab fa-rebel rebellion-icon" aria-hidden="true"></span>
-        <span class="fab fa-empire empire-icon" aria-hidden="true"></span>
+        <span class="fa-brands fa-rebel rebellion-icon" aria-hidden="true"></span>
+        <span class="fa-brands fa-empire empire-icon" aria-hidden="true"></span>
       `;
     }
     else {
-      winningPlayerIcon.innerHTML = `<span class="fab fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} ${winner.toLowerCase()}-icon" aria-hidden="true"></span>`;
+      winningPlayerIcon.innerHTML = `<span class="fa-brands fa-${winner === 'Rebellion' ? 'rebel' : 'empire'} ${winner.toLowerCase()}-icon" aria-hidden="true"></span>`;
     }
 
     if (typeof location === 'string') {

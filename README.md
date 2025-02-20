@@ -17,7 +17,6 @@ Inspired by the [Tic Tac Toe assignment](https://www.theodinproject.com/lessons/
 * [Babel](https://babeljs.io)
 * [Normalize.css](https://necolas.github.io/normalize.css)
 * [Font Awesome](https://fontawesome.com)
-* [Google Fonts](https://fonts.google.com)
 
 ## Demo
 

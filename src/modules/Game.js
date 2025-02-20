@@ -222,7 +222,7 @@ class Game {
       <p class="current-turn-message">The ${firstPlayer.playAs} goes first!</p>
       <div class="game-board">${this.board.map((square, index) => {
         return `<div class="square-container">
-          <button class="square fab" id="${index}"></button>
+          <button class="square fa-brands" id="${index}"></button>
         </div>`;
       }).join('')}</div>
       <button type="button" class="button restart-button">Restart</button>
