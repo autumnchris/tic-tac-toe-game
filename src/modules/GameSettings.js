@@ -1,11 +1,9 @@
 import Game from './Game';
-import NewGameModal from './NewGameModal';
 import SettingsFormData from './SettingsFormData';
 
 class GameSettings {
   constructor() {
     this.game = new Game();
-    this.newGameModal = new NewGameModal();
   }
 
   handleSubmit(event, gameSettingsData) {
@@ -24,8 +22,7 @@ class GameSettings {
   }
 
   openGameSettings() {
-    this.newGameModal.removeNewGameModal('main');
-    this.game.removeGameBoard('.game-container');
+    this.game.removeGameAndModal();
     this.renderGameSettings('.game-container');
   }
 

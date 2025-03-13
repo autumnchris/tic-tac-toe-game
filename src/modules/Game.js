@@ -22,6 +22,12 @@ class Game {
     this.aiMoveDelay;
   }
 
+  // Remove both game and modal from DOM
+  removeGameAndModal() {
+    this.newGameModal.removeNewGameModal('main');
+    this.removeGameBoard('.game-container');
+  }
+
   // Resets and renders the game board for a new game
   startNewGame(gameSettings) {
     clearTimeout(this.aiMoveDelay);
