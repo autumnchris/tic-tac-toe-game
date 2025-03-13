@@ -1,9 +1,8 @@
-import Game from './Game';
 import SettingsFormData from './SettingsFormData';
 
 class GameSettings {
-  constructor() {
-    this.game = new Game();
+  constructor(gameInstance) {
+    this.game = gameInstance;
   }
 
   handleSubmit(event, gameSettingsData) {

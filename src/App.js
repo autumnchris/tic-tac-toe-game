@@ -1,12 +1,14 @@
 import Header from './modules/Header';
 import Footer from './modules/Footer';
 import GameSettings from './modules/GameSettings';
+import Game from './modules/Game';
 
 class App {
   constructor() {
     this.header = new Header();
     this.footer = new Footer();
-    this.gameSettings = new GameSettings();
+    this.game = new Game();
+    this.gameSettings = new GameSettings(this.game);
     this.renderApp();
   }
 
@@ -15,6 +17,8 @@ class App {
     document.addEventListener('click', event => {
       const element = event.target;
       element.matches('#modal .game-settings-button') ? this.gameSettings.openGameSettings() : null;
+      element.matches('.game-board .square-container .square') ? this.game.selectSquare(event) : null;
+      element.matches('#modal .restart-button') ? this.game.restart() : null;
     });
 
     document.addEventListener('change', event => {

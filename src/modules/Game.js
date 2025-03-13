@@ -22,6 +22,11 @@ class Game {
     this.aiMoveDelay;
   }
 
+  // Triggers the startNewGame() function when the Restart button is clicked
+  restart() {
+    this.startNewGame(this.gameSettings);
+  }
+
   // Remove both game and modal from DOM
   removeGameAndModal() {
     this.newGameModal.removeNewGameModal('main');
@@ -194,15 +199,6 @@ class Game {
     });
   }
 
-  // Event listeners
-  events() {
-    document.addEventListener('click', event => {
-      const element = event.target;
-      element.matches('.game-board .square-container .square') ? this.selectSquare(event) : null;
-      element.matches('#modal .restart-button') ? this.startNewGame(this.gameSettings) : null;
-    });
-  }
-
   // DOM methods
   updateCurrentTurnMessage() {
     const currentTurnMessage = document.querySelector('.current-turn-message');
@@ -234,7 +230,6 @@ class Game {
       <button type="button" class="button restart-button">Restart</button>
     `;
     document.querySelector(location).appendChild(gameBoard);
-    this.events();
   }
 
   removeGameBoard(location) {
